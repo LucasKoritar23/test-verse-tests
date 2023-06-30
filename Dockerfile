@@ -14,6 +14,12 @@ RUN wget -q https://github.com/allure-framework/allure2/releases/download/2.22.4
 RUN tar -zxvf allure-2.22.4.tgz -C /opt/
 RUN ln -s /opt/allure-2.22.4/bin/allure /usr/bin/allure
 
+ENV DB_USER = $DB_USER
+ENV DB_HOST = $DB_HOST
+ENV DB_DATABASE = $DB_DATABASE
+ENV DB_PASSWORD = $DB_PASSWORD
+ENV DB_PORT = $DB_PORT
+ENV URI_API = $URI_API
 # Removing folder allure .tgz after installed
 RUN rm -R allure-2.22.4.tgz
 

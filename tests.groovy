@@ -1,6 +1,15 @@
 pipeline {
     agent any
 
+    environment {
+        DB_USER = "$DB_USER"
+        DB_HOST = "$DB_HOST"
+        DB_DATABASE = "$DB_DATABASE"
+        DB_PASSWORD = "$DB_PASSWORD"
+        DB_PORT = "$DB_PORT"
+        URI_API = "$URI_API"
+    }
+
     parameters {
         string(
             name: 'playwright_test_tag',
@@ -51,7 +60,7 @@ pipeline {
         stage('Running Tests') {
             steps {
                 script {
-                    sh "docker run -t $DOCKERHUB_USERNAME/test-verse-tests:${params.image_test} npm run test ${params.playwright_test_tag}"
+                    sh "docker run -e ${URI_API} -t $DOCKERHUB_USERNAME/test-verse-tests:${params.image_test} npm run test ${params.playwright_test_tag}"
                 }
             }
         }

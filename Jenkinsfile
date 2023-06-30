@@ -11,6 +11,7 @@ pipeline {
         DB_DATABASE = "$DB_DATABASE"
         DB_PASSWORD = "$DB_PASSWORD"
         DB_PORT = "$DB_PORT"
+        URI_API = "$URI_API"
     }
 
     stages {
