@@ -1,4 +1,3 @@
-def newTag
 def currentTag
 def token
 import groovy.json.JsonSlurper
@@ -43,11 +42,11 @@ pipeline {
                             "username": "'${JOB_NAME}'",
                             "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
                             "embeds": [{
-                                "title": "Tests Report",
-                                "description": "Starting Tests ⏳",
+                                "title": "Build Image Test Report",
+                                "description": "Building Image Tests ⏳",
                                 "color": 16776960,
                                 "footer": {
-                                    "text": "running test-verse API"
+                                    "text": "test-verse API"
                                 },
                                 "fields": [
                                     {
@@ -64,7 +63,7 @@ pipeline {
                                     }
                                 ]
                             }]
-                        }' "$DISCORD_TEST_WEBHOOK_URL"
+                        }' "$DISCORD_WEBHOOK_URL"
                     '''
             }
         }
@@ -127,36 +126,18 @@ pipeline {
                 }
             }
         }
-
-        stage('Running Tests') {
-            steps {
-                script {
-                    sh "docker run -t $DOCKERHUB_USERNAME/test-verse-tests:${currentTag} npm run test ${params.playwright_test_tag}"
-                }
-            }
-        }
     }
 
     post {
-        always {
-            archiveArtifacts artifacts: 'reports/playwright-report/'
-            allure([
-                includeProperties: true,
-                jdk: '',
-                reportBuildPolicy: 'ALWAYS',
-                results: [[path: 'allure-results']]
-            ])
-        }
         success {
             script {
-                echo "new Tag: ${newTag}"
                 sh '''
                     curl -s -X POST -H "Content-Type: application/json" -d '{
                     "username": "'${JOB_NAME}'",
                     "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
                     "embeds": [{
-                        "title": "Tests Report",
-                        "description": "Tests runned successful! :white_check_mark:",
+                        "title": "Build Image Test Report",
+                        "description": "Build Image tests created successful! :white_check_mark:",
                         "color": 65340,
                         "footer": {
                             "text": "test-verse API"
@@ -165,10 +146,6 @@ pipeline {
                             {
                                 "name": "Pipeline Name",
                                 "value": "'${JOB_NAME}'"
-                            },
-                            {
-                                "name": "Image ID",
-                                "value": "'${newTag}'"
                             },
                             {
                                 "name": "Build ID",
@@ -180,7 +157,7 @@ pipeline {
                             }
                         ]
                     }]
-                }' "$DISCORD_TEST_WEBHOOK_URL"
+                }' "$DISCORD_WEBHOOK_URL"
             '''
             }
         }
@@ -191,8 +168,8 @@ pipeline {
                     "username": "'${JOB_NAME}'",
                     "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
                     "embeds": [{
-                        "title": "Tests Report",
-                        "description": "Tests Runned error! :frowning2:",
+                        "title": "Build Image Test Report",
+                        "description": "Build Image tests created error! :frowning2:",
                         "color": 16711680,
                         "footer": {
                             "text": "test-verse API"
@@ -212,7 +189,7 @@ pipeline {
                             }
                         ]
                     }]
-                }' "$DISCORD_TEST_WEBHOOK_URL"
+                }' "$DISCORD_WEBHOOK_URL"
             '''
         }
     }

@@ -25,7 +25,7 @@ const config = {
          */
         timeout: 30000
     },
-    workers: process.env.CI ? 2 : undefined,
+    workers: undefined,
     fullyParallel: true,
     reporter: [
         ['allure-playwright', { outputFolder: 'allure-results' }],
