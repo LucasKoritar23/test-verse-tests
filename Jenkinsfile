@@ -96,7 +96,7 @@ pipeline {
             }
         }
 
-        stage('GET Latest Tag') {
+        stage('GET Latest Tag Application') {
             steps {
                 script {
                     def curlCommand = "curl --location 'https://hub.docker.com/v2/repositories/${DOCKERHUB_USERNAME}/test-verse/tags' \
@@ -112,7 +112,7 @@ pipeline {
             }
         }
 
-        stage('Build Docker Application') {
+        stage('Build Docker Image Test') {
             steps {
                 script {
                     def envsApp = "export DB_USER=$DB_USER && export DB_HOST=$DB_HOST && export DB_DATABASE=$DB_DATABASE && export DB_PASSWORD=$DB_PASSWORD && export DB_PORT=$DB_PORT && export URI_API=$URI_API"
