@@ -115,7 +115,8 @@ pipeline {
         stage('Build Docker Application') {
             steps {
                 script {
-                    sh "docker build -e ${URI_API} -t $DOCKERHUB_USERNAME/test-verse-tests:${currentTag} ."
+                    def envsApp = "export DB_USER=$DB_USER && export DB_HOST=$DB_HOST && export DB_DATABASE=$DB_DATABASE && export DB_PASSWORD=$DB_PASSWORD && export DB_PORT=$DB_PORT && export URI_API=$URI_API"
+                    sh "${envsApp} && docker build -t $DOCKERHUB_USERNAME/test-verse-tests:${currentTag} ."
                     def message = "New Image Tests: ${currentTag} - API Test Verse"
                     sh "curl -X POST -H 'Content-Type: application/json' -d '{\"content\":\"${message}\"}' $DISCORD_WEBHOOK_URL"
                 }
