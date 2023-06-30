@@ -1,0 +1,14 @@
+{
+    "name": "test-verse-tests",
+    "dockerFile": "../Dockerfile",
+    "extensions": [
+        "adpyke.codesnap",
+        "ms-vscode-remote.remote-containers",
+        "vscode-icons-team.vscode-icons",
+        "ms-playwright.playwright",
+        "christian-kohler.path-intellisense",
+        "xabikos.javascriptsnippets",
+        "dbaeumer.vscode-eslint"
+    ],
+    "settings": {}
+}

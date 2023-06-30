@@ -1,0 +1,32 @@
+{
+    "schema": "POST suites - Default",
+    "type": "object",
+    "properties": {
+        "id_suite": {
+            "type": "integer"
+        },
+        "nome_suite": {
+            "type": "string"
+        },
+        "status_ultima_exec": {
+            "type": "null"
+        },
+        "status_atual": {
+            "type": "string"
+        },
+        "data_criacao": {
+            "type": "string"
+        },
+        "data_edicao": {
+            "type": "null"
+        }
+    },
+    "required": [
+        "id_suite",
+        "nome_suite",
+        "status_ultima_exec",
+        "status_atual",
+        "data_criacao",
+        "data_edicao"
+    ]
+}
