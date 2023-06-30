@@ -118,7 +118,6 @@ pipeline {
                     def message = "New Image Tests: ${currentTag} - API Test Verse"
                     sh "curl -X POST -H 'Content-Type: application/json' -d '{\"content\":\"${message}\"}' $DISCORD_WEBHOOK_URL"
                 }
-                }
             }
         }
     }
