@@ -116,10 +116,6 @@ pipeline {
                     def slurper = new JsonSlurper()
                     def jsonResponse = slurper.parseText(response)
                     currentTag = jsonResponse.results[0].name
-                    newTag = incrementTag(currentTag)
-                    env.NEW_TAG = newTag
-                    echo "Tag: ${currentTag}"
-                    echo "new Tag: ${newTag}"
                 }
             }
         }
@@ -127,7 +123,7 @@ pipeline {
         stage('Build Docker Application') {
             steps {
                 script {
-                    sh "docker build -t $DOCKERHUB_USERNAME/test-verse-tests:${newTag} ."
+                    sh "docker build -t $DOCKERHUB_USERNAME/test-verse-tests:${currentTag} ."
                 }
             }
         }
@@ -135,7 +131,7 @@ pipeline {
         stage('Running Tests') {
             steps {
                 script {
-                    sh "docker run -it $DOCKERHUB_USERNAME/test-verse-tests:${newTag} npm run test ${params.playwright_test_tag}"
+                    sh "docker run -t $DOCKERHUB_USERNAME/test-verse-tests:${currentTag} npm run test ${params.playwright_test_tag}"
                 }
             }
         }
@@ -220,20 +216,4 @@ pipeline {
             '''
         }
     }
-}
-
-def incrementTag(currentTag) {
-    if (currentTag == null || currentTag.trim().isEmpty()) {
-        return '1.0.0'
-    }
-
-    def parts = currentTag.tokenize('.')
-    def major = parts[0].toInteger()
-    def minor = parts[1].toInteger()
-    def patch = parts[2].toInteger()
-
-    patch += 1
-
-    def newTag = "${major}.${minor}.${patch}"
-    return newTag
 }
