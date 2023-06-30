@@ -13,14 +13,6 @@ pipeline {
         DB_PORT = "$DB_PORT"
     }
 
-    parameters {
-        string(
-            name: 'playwright_test_tag',
-            defaultValue: '@testVerse',
-            description: 'Set Tag Test to API test-verse'
-        )
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -123,6 +115,9 @@ pipeline {
             steps {
                 script {
                     sh "docker build -t $DOCKERHUB_USERNAME/test-verse-tests:${currentTag} ."
+                    def message = "New Image Tests: ${currentTag} - API Test Verse"
+                    sh "curl -X POST -H 'Content-Type: application/json' -d '{\"content\":\"${message}\"}' $DISCORD_WEBHOOK_URL"
+                }
                 }
             }
         }
