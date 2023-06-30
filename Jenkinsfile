@@ -47,7 +47,7 @@ pipeline {
                                 "description": "Starting Tests ⏳",
                                 "color": 16776960,
                                 "footer": {
-                                    "text": "test-verse API"
+                                    "text": "running test-verse API"
                                 },
                                 "fields": [
                                     {
@@ -64,7 +64,7 @@ pipeline {
                                     }
                                 ]
                             }]
-                        }' "$DISCORD_WEBHOOK_URL"
+                        }' "$DISCORD_TEST_WEBHOOK_URL"
                     '''
             }
         }
@@ -159,8 +159,8 @@ pipeline {
                     "username": "'${JOB_NAME}'",
                     "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
                     "embeds": [{
-                        "title": "Build Report",
-                        "description": "Build successful! :white_check_mark:",
+                        "title": "Tests Report",
+                        "description": "Tests runned successful! :white_check_mark:",
                         "color": 65340,
                         "footer": {
                             "text": "test-verse API"
@@ -184,7 +184,7 @@ pipeline {
                             }
                         ]
                     }]
-                }' "$DISCORD_WEBHOOK_URL"
+                }' "$DISCORD_TEST_WEBHOOK_URL"
             '''
             }
         }
@@ -195,8 +195,8 @@ pipeline {
                     "username": "'${JOB_NAME}'",
                     "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
                     "embeds": [{
-                        "title": "Build Report",
-                        "description": "Build error! :frowning2:",
+                        "title": "Tests Report",
+                        "description": "Tests Runned error! :frowning2:",
                         "color": 16711680,
                         "footer": {
                             "text": "test-verse API"
@@ -216,7 +216,7 @@ pipeline {
                             }
                         ]
                     }]
-                }' "$DISCORD_WEBHOOK_URL"
+                }' "$DISCORD_TEST_WEBHOOK_URL"
             '''
         }
     }
