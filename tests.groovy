@@ -60,7 +60,7 @@ pipeline {
         stage('Running Tests') {
             steps {
                 script {
-                    sh "docker run -e ${URI_API} -t $DOCKERHUB_USERNAME/test-verse-tests:${params.image_test} npm run test ${params.playwright_test_tag}"
+                    sh "docker run -t $DOCKERHUB_USERNAME/test-verse-tests:${params.image_test} npm run test ${params.playwright_test_tag}"
                 }
             }
         }
