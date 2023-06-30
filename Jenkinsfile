@@ -14,6 +14,14 @@ pipeline {
         DB_PORT = "$DB_PORT"
     }
 
+    parameters {
+        string(
+            name: 'playwright_test_tag',
+            defaultValue: '@testVerse',
+            description: 'Set Tag Test to API test-verse'
+        )
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -119,20 +127,30 @@ pipeline {
         stage('Build Docker Application') {
             steps {
                 script {
-                    sh "docker build -t $DOCKERHUB_USERNAME/test-verse:${newTag} ."
+                    sh "docker build -t $DOCKERHUB_USERNAME/test-verse-tests:${newTag} ."
                 }
             }
         }
 
-        stage('Publish') {
+        stage('Running Tests') {
             steps {
-                sh "echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin"
-                sh "docker push $DOCKERHUB_USERNAME/test-verse:${newTag}"
+                script {
+                    sh "docker run -it $DOCKERHUB_USERNAME/test-verse-tests:${newTag} npm run test ${params.playwright_test_tag}"
+                }
             }
         }
     }
 
     post {
+        always {
+            archiveArtifacts artifacts: 'reports/playwright-report/'
+            allure([
+                includeProperties: true,
+                jdk: '',
+                reportBuildPolicy: 'ALWAYS',
+                results: [[path: 'allure-results']]
+            ])
+        }
         success {
             script {
                 echo "new Tag: ${newTag}"
