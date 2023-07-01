@@ -61,9 +61,11 @@ pipeline {
             steps {
                 script {
                     def envsApp = "export DB_USER=$DB_USER && export DB_HOST=$DB_HOST && export DB_DATABASE=$DB_DATABASE && export DB_PASSWORD=$DB_PASSWORD && export DB_PORT=$DB_PORT && export URI_API=$URI_API"
-                    def dockerBuildCommand = "docker run -e DB_USER=$DB_USER -e DB_HOST=$DB_HOST -e DB_DATABASE=$DB_DATABASE -e DB_PASSWORD=$DB_PASSWORD -e DB_PORT=$DB_PORT -e URI_API=$URI_API -t $DOCKERHUB_USERNAME/test-verse-tests:${params.image_test}"
+                    def dockerBuildCommand = "docker run -e DB_USER=$DB_USER -e DB_HOST=$DB_HOST -e DB_DATABASE=$DB_DATABASE -e DB_PASSWORD=$DB_PASSWORD -e DB_PORT=$DB_PORT -e URI_API=$URI_API -t --rm $DOCKERHUB_USERNAME/test-verse-tests:${params.image_test}"
                     def playwrightCommand = "npm run test ${params.playwright_test_tag}"
-                    sh "${envsApp} && ${dockerBuildCommand} ${playwrightCommand}"
+                    wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+                        sh "${envsApp} && ${dockerBuildCommand} ${playwrightCommand}"
+                    }
                 }
             }
         }
