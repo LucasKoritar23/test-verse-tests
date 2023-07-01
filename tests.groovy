@@ -75,6 +75,14 @@ pipeline {
     }
 
     post {
+        always {
+            allure([
+                includeProperties: true,
+                jdk: '',
+                reportBuildPolicy: 'ALWAYS',
+                results: [[path: 'allure-results']]
+            ])
+        }
         success {
             script {
                 sh '''
