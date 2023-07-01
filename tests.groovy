@@ -91,6 +91,14 @@ pipeline {
                 reportBuildPolicy: 'ALWAYS',
                 results: [[path: 'allure-results']]
             ])
+            publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'allure-results',
+                reportFiles: 'index.html',
+                reportName: 'Allure Report'
+            ])
         }
         success {
             script {
