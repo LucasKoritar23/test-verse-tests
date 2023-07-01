@@ -74,6 +74,14 @@ pipeline {
                 sh "npm i allure-commandline"
             }
         }
+
+        stage('Check Report') {
+            steps {
+                sh "allure --version"
+                sh "ls -la allure-results"
+                sh "ls -la /var/jenkins_home/workspace/pipeline-test-verse-running-tests/allure-results"
+            }
+        }
     }
 
     post {
