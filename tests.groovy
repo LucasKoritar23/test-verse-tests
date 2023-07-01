@@ -82,8 +82,9 @@ pipeline {
 
         stage('Check Reports') {
             steps {
-                sh 'allure --version'
-                sh 'ls -la /var/jenkins_home/workspace/pipeline-test-verse-running-tests/'
+                sh 'ls'
+                sh 'ls -la /var/jenkins_home/workspace/pipeline-test-verse-running-tests/allure-results'
+                sh 'ls -la /var/jenkins_home/workspace/pipeline-test-verse-running-tests/reports'
             }
         }
     }
