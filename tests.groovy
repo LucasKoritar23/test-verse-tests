@@ -68,6 +68,8 @@ pipeline {
                     }
                 }
                 sh "pwd"
+                sh "docker cp test-verse-tests-${params.image_test}:/test-verse-tests/allure-results /var/jenkins_home/workspace/pipeline-test-verse-running-tests/allure-results"
+                sh "ls"
             }
         }
     }
