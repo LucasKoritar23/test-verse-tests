@@ -101,9 +101,9 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: false,
                 keepAll: true,
-                reportDir: 'allure-results',
+                reportDir: 'reports/playwright-report',
                 reportFiles: 'index.html',
-                reportName: 'Allure Report'
+                reportName: 'Playwright Report'
             ])
         }
         success {
