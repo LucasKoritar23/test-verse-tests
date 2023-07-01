@@ -91,7 +91,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: '/var/jenkins_home/workspace/pipeline-test-verse-running-tests/reports'
+            // archiveArtifacts artifacts: '/var/jenkins_home/workspace/pipeline-test-verse-running-tests/reports'
             allure([
                 includeProperties: true,
                 jdk: '',
