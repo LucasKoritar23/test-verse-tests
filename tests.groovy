@@ -57,6 +57,12 @@ pipeline {
             }
         }
 
+        stage('CLEANING WORKDIR') {
+            steps {
+                deleteDir()
+            }
+        }
+        
         stage('Running Tests') {
             steps {
                 script {
@@ -67,18 +73,18 @@ pipeline {
                         sh "${envsApp} && ${dockerBuildCommand} ${playwrightCommand}"
                     }
                 }
-                sh "pwd"
+                sh 'pwd'
                 sh "docker cp test-verse-tests-${params.image_test}:/test-verse-tests/allure-results /var/jenkins_home/workspace/pipeline-test-verse-running-tests/allure-results"
-                sh "ls"
+                sh 'ls'
                 sh "docker rm test-verse-tests-${params.image_test}"
             }
         }
 
         stage('Check Report') {
             steps {
-                sh "allure --version"
-                sh "ls -la allure-results"
-                sh "ls -la /var/jenkins_home/workspace/pipeline-test-verse-running-tests/allure-results"
+                sh 'allure --version'
+                sh 'ls -la allure-results'
+                sh 'ls -la /var/jenkins_home/workspace/pipeline-test-verse-running-tests/allure-results'
             }
         }
     }
