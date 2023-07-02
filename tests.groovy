@@ -26,34 +26,51 @@ pipeline {
     stages {
         stage('Start Notify') {
             steps {
-                sh '''
-                        curl -s -X POST -H "Content-Type: application/json" -d '{
-                            "username": "'${JOB_NAME}'",
-                            "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
-                            "embeds": [{
+                script {
+                    def discordWebhookUrl = "$DISCORD_TEST_WEBHOOK_URL"
+                    def jobName = "${JOB_NAME}"
+                    def buildId = "${BUILD_ID}"
+                    def buildUrl = "${BUILD_URL}"
+                    def tagRunner = "${params.playwright_test_tag}"
+                    def imageTest = "${params.image_test}"
+
+                    sh """
+                    curl -s -X POST -H 'Content-Type: application/json' -d '{
+                        "username": "$jobName",
+                        "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
+                        "embeds": [{
                                 "title": "Test Report",
                                 "description": "Starting Tests ⏳",
                                 "color": 16776960,
-                                "footer": {
-                                    "text": "test-verse API"
+                            "footer": {
+                                "text": "test-verse API"
+                            },
+                            "fields": [
+                                {
+                                    "name": "Pipeline Name",
+                                    "value": "$jobName"
                                 },
-                                "fields": [
-                                    {
-                                        "name": "Pipeline Name",
-                                        "value": "'${JOB_NAME}'"
-                                    },
-                                    {
-                                        "name": "Build ID",
-                                        "value": "'${BUILD_ID}'"
-                                    },
-                                    {
-                                        "name": "Pipeline URL",
-                                        "value": "'${BUILD_URL}'"
-                                    }
-                                ]
-                            }]
-                        }' "$DISCORD_TEST_WEBHOOK_URL"
-                    '''
+                                {
+                                    "name": "Image Test",
+                                    "value": "$imageTest"
+                                },
+                                {
+                                    "name": "Tag",
+                                    "value": "$tagRunner"
+                                },
+                                {
+                                    "name": "Build ID",
+                                    "value": "$buildId"
+                                },
+                                {
+                                    "name": "Pipeline URL",
+                                    "value": "$buildUrl"
+                                }
+                            ]
+                        }]
+                    }' "$discordWebhookUrl"
+                """
+                }
             }
         }
 
@@ -62,7 +79,7 @@ pipeline {
                 deleteDir()
             }
         }
-        
+
         stage('Running Tests') {
             steps {
                 script {
@@ -147,34 +164,51 @@ pipeline {
         }
 
         failure {
-            sh '''
-                curl -s -X POST -H "Content-Type: application/json" -d '{
-                    "username": "'${JOB_NAME}'",
-                    "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
-                    "embeds": [{
+            script {
+                def discordWebhookUrl = "$DISCORD_TEST_WEBHOOK_URL"
+                def jobName = "${JOB_NAME}"
+                def buildId = "${BUILD_ID}"
+                def buildUrl = "${BUILD_URL}"
+                def tagRunner = "${params.playwright_test_tag}"
+                def imageTest = "${params.image_test}"
+
+                sh """
+                    curl -s -X POST -H 'Content-Type: application/json' -d '{
+                        "username": "$jobName",
+                        "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
+                        "embeds": [{
                         "title": "Test Report",
                         "description": "Run Tests error! :frowning2:",
                         "color": 16711680,
-                        "footer": {
-                            "text": "test-verse API"
-                        },
-                        "fields": [
-                            {
-                                "name": "Pipeline Name",
-                                "value": "'${JOB_NAME}'"
+                            "footer": {
+                                "text": "test-verse API"
                             },
-                            {
-                                "name": "Build ID",
-                                "value": "'${BUILD_ID}'"
-                            },
-                            {
-                                "name": "Pipeline URL",
-                                "value": "'${BUILD_URL}'"
-                            }
-                        ]
-                    }]
-                }' "$DISCORD_TEST_WEBHOOK_URL"
-            '''
+                            "fields": [
+                                {
+                                    "name": "Pipeline Name",
+                                    "value": "$jobName"
+                                },
+                                {
+                                    "name": "Image Test",
+                                    "value": "$imageTest"
+                                },
+                                {
+                                    "name": "Tag",
+                                    "value": "$tagRunner"
+                                },
+                                {
+                                    "name": "Build ID",
+                                    "value": "$buildId"
+                                },
+                                {
+                                    "name": "Pipeline URL",
+                                    "value": "$buildUrl"
+                                }
+                            ]
+                        }]
+                    }' "$discordWebhookUrl"
+                """
+            }
         }
     }
 }
