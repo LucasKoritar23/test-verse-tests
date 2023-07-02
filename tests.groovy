@@ -91,20 +91,11 @@ pipeline {
 
     post {
         always {
-            // archiveArtifacts artifacts: '/var/jenkins_home/workspace/pipeline-test-verse-running-tests/reports'
             allure([
                 includeProperties: true,
                 jdk: '',
                 reportBuildPolicy: 'ALWAYS',
                 results: [[path: 'allure-results']]
-            ])
-            publishHTML([
-                allowMissing: false,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: 'reports/playwright-report',
-                reportFiles: 'index.html',
-                reportName: 'Playwright Report'
             ])
         }
         success {
@@ -167,7 +158,7 @@ pipeline {
                             }
                         ]
                     }]
-                }' "$DISCORD_WEBHOOK_URL"
+                }' "$DISCORD_TEST_WEBHOOK_URL"
             '''
         }
     }
