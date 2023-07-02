@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     environment {
-        DB_USER = "$DB_USER"
-        DB_HOST = "$DB_HOST"
-        DB_DATABASE = "$DB_DATABASE"
-        DB_PASSWORD = "$DB_PASSWORD"
-        DB_PORT = "$DB_PORT"
-        URI_API = "$URI_API"
+        DB_USER = sh(returnStdout: true, script: 'echo $DB_USER').trim()
+        DB_HOST = sh(returnStdout: true, script: 'echo $DB_HOST').trim()
+        DB_DATABASE = sh(returnStdout: true, script: 'echo $DB_DATABASE').trim()
+        DB_PASSWORD = sh(returnStdout: true, script: 'echo $DB_PASSWORD').trim()
+        DB_PORT = sh(returnStdout: true, script: 'echo $DB_PORT').trim()
+        URI_API = sh(returnStdout: true, script: 'echo $URI_API').trim()
     }
 
     parameters {
@@ -100,34 +100,49 @@ pipeline {
         }
         success {
             script {
-                sh '''
-                    curl -s -X POST -H "Content-Type: application/json" -d '{
-                    "username": "'${JOB_NAME}'",
-                    "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
-                    "embeds": [{
-                        "title": "Test Report",
-                        "description": "Run Tests successful! :white_check_mark:",
-                        "color": 65340,
-                        "footer": {
-                            "text": "test-verse API"
-                        },
-                        "fields": [
-                            {
-                                "name": "Pipeline Name",
-                                "value": "'${JOB_NAME}'"
+                def discordWebhookUrl = "$DISCORD_TEST_WEBHOOK_URL"
+                def jobName = "${JOB_NAME}"
+                def buildId = "${BUILD_ID}"
+                def buildUrl = "${BUILD_URL}"
+                def tagRunner = "${params.playwright_test_tag}"
+                def imageTest = "${params.image_test}"
+
+                sh """
+                    curl -s -X POST -H 'Content-Type: application/json' -d '{
+                        "username": "$jobName",
+                        "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jenkins_logo.svg/1200px-Jenkins_logo.svg.png",
+                        "embeds": [{
+                            "title": "Build Report",
+                            "description": "Build successful! :white_check_mark:",
+                            "color": 65340,
+                            "footer": {
+                                "text": "test-verse API"
                             },
-                            {
-                                "name": "Build ID",
-                                "value": "'${BUILD_ID}'"
-                            },
-                            {
-                                "name": "Pipeline URL",
-                                "value": "'${BUILD_URL}'"
-                            }
-                        ]
-                    }]
-                }' "$DISCORD_TEST_WEBHOOK_URL"
-            '''
+                            "fields": [
+                                {
+                                    "name": "Pipeline Name",
+                                    "value": "$jobName"
+                                },
+                                {
+                                    "name": "Image Test",
+                                    "value": "$imageTest"
+                                },
+                                {
+                                    "name": "Tag",
+                                    "value": "$tagRunner"
+                                },
+                                {
+                                    "name": "Build ID",
+                                    "value": "$buildId"
+                                },
+                                {
+                                    "name": "Pipeline URL",
+                                    "value": "$buildUrl"
+                                }
+                            ]
+                        }]
+                    }' "$discordWebhookUrl"
+                """
             }
         }
 
