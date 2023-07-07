@@ -93,7 +93,6 @@ pipeline {
                 sh 'pwd'
                 sh "docker cp test-verse-tests-${params.image_test}:/test-verse-tests/allure-results /var/jenkins_home/workspace/pipeline-test-verse-running-tests/allure-results"
                 sh "docker cp test-verse-tests-${params.image_test}:/test-verse-tests/reports /var/jenkins_home/workspace/pipeline-test-verse-running-tests/reports"
-                sh "docker rm test-verse-tests-${params.image_test}"
             }
         }
 
@@ -108,6 +107,9 @@ pipeline {
 
     post {
         always {
+            script {
+                 sh "docker rm test-verse-tests-${params.image_test}"
+            }
             allure([
                 includeProperties: true,
                 jdk: '',
