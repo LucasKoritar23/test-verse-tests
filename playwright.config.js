@@ -1,5 +1,6 @@
 // @ts-check
 const { devices } = require('@playwright/test');
+const dotenv = require('dotenv');
 
 /**
  * Read environment variables from file.
@@ -7,12 +8,16 @@ const { devices } = require('@playwright/test');
  */
 // require('dotenv').config();
 
+
+const envFileName = process.env.ENV_TYPE === 'prd' ? '.env.prd' : '.env.local'; 
+
 /**
  * @see https://playwright.dev/docs/test-configuration
  * @type {import('@playwright/test').PlaywrightTestConfig}
  */
 
-require('dotenv').config();
+
+dotenv.config({ path: envFileName });
 require('log-timestamp');
 
 const config = {

@@ -56,6 +56,11 @@ class DataFaker {
     getRandomNumber(max) {
         return faker.datatype.number({ min: 1, max: max });
     }
+
+    getCurrentDate(format) {
+        const moment = require('moment');
+        return moment(new Date()).format(format);
+    }
 }
 
 module.exports = { DataFaker };

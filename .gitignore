@@ -6,6 +6,8 @@ test-results/
 videos/
 .DS_STORE
 .env
+.env.local
+.env.prd
 /.vscode
 /reports/junit/results.xml
 /test-results/
