@@ -14,7 +14,8 @@ test.describe('Validate POST test-cases API @allPostTestCases @testVerse @crudTe
         const suiteId = apiResponse.id_suite
         const testCases = new TestCasesClient(request);
         const payload = require('../mocks/postTestCases').payloadPostTestCases(suiteId);
-        const reqTestCases = await testCases.postTestCases(payload, 201)
+        const reqTestCases = (await testCases.postTestCases(payload, 201)).apiResponse
+        new Contract().validateContract(reqTestCases, path.join(__dirname, '../schemas/postTestCases.json'));
     });
 
     const recordsPosTestCase = parse(fs.readFileSync(path.join(__dirname, '../examples/examplesPostTestCase.csv')), {

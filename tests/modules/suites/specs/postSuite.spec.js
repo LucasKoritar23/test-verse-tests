@@ -9,15 +9,15 @@ const { Contract } = require('../../../helpers/contract');
 test.describe('Validate POST Suite API @allPostSuite @testVerse @crudSuite', () => {
     test('Should create suite @postSuite', async ({ request }) => {
         const suiteClient = new SuiteClient(request);
-        const apiResponse = (await suiteClient.createSuite()).apiResponse
-        new Contract().validateContract(apiResponse, path.join(__dirname, '../schemas/postSuiteDefault.json'));
+        const reqPostSuite = (await suiteClient.createSuite()).apiResponse
+        new Contract().validateContract(reqPostSuite, path.join(__dirname, '../schemas/postSuiteDefault.json'));
     });
 
     test('Should create suite with basic Payload @postSuiteBasicPayload', async ({ request }) => {
         const suiteClient = new SuiteClient(request);
         const payload = require('../mocks/postSuite').payloadPostSuite();
-        const apiResponse = (await suiteClient.postSuite(payload, 201)).apiResponse
-        new Contract().validateContract(apiResponse, path.join(__dirname, '../schemas/postSuiteDefault.json'));
+        const reqPostSuite = (await suiteClient.postSuite(payload, 201)).apiResponse
+        new Contract().validateContract(reqPostSuite, path.join(__dirname, '../schemas/postSuiteDefault.json'));
     });
 
     const recordsPostSuite = parse(fs.readFileSync(path.join(__dirname, '../examples/examplesPostSuite.csv')), {

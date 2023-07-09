@@ -1,0 +1,35 @@
+{
+    "schema": "PUT /suites",
+    "type": "object",
+    "properties": {
+        "id_suite": {
+            "type": "integer"
+        },
+        "nome_suite": {
+            "type": "string"
+        },
+        "status_ultima_exec": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "status_atual": {
+            "type": "string"
+        },
+        "data_criacao": {
+            "type": "string"
+        },
+        "data_edicao": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "id_suite",
+        "nome_suite",
+        "status_ultima_exec",
+        "status_atual",
+        "data_criacao",
+        "data_edicao"
+    ]
+}

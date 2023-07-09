@@ -1,4 +1,5 @@
 const { expect } = require("@playwright/test");
+const { SuiteClient } = require("../../suites/clients/suiteClient");
 
 class TestCasesClient {
     /**
@@ -32,6 +33,36 @@ class TestCasesClient {
         console.log(`StatusCode ${this.basePath}: ` + apiRequest.status());
         expect(apiRequest.status()).toEqual(statusCode);
         return { "apiResponse": apiResponse, "payloadSended": payload }
+    }
+
+    async putTestCases(testCaseId, payload, statusCode = 200) {
+        const uri = this.baseUri + this.basePath + `/${testCaseId}`;
+        console.log(`Starting Request PUT: ${this.basePath}`);
+        console.log("Uri: " + uri);
+        console.log("Payload: " + payload);
+        const apiRequest = await this.request.put(uri, {
+            data: JSON.parse(payload),
+            headers: JSON.parse(this.headers()),
+        });
+        const apiResponse = await apiRequest.json();
+        console.log(`Response ${[this.basePath]}: `);
+        console.log(apiResponse);
+        console.log(`StatusCode ${this.basePath}: ` + apiRequest.status());
+        expect(apiRequest.status()).toEqual(statusCode);
+        return { "apiResponse": apiResponse, "payloadSended": payload }
+    }
+
+    async createTestCase(payload = null, statusCode = 201) {
+        const suiteClient = new SuiteClient(this.request);
+        const reqCreateSuite = await suiteClient.createSuite(null, statusCode)
+        const suiteId = JSON.parse(JSON.stringify(reqCreateSuite)).apiResponse.id_suite
+
+        if (payload == null) {
+            const payloadFile = require("../mocks/postTestCases");
+            payload = payloadFile.payloadPostTestCases(suiteId);
+        }
+
+        return await this.postTestCases(payload, statusCode)
     }
 }
 

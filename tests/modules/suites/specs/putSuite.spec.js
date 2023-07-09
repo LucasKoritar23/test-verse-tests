@@ -5,6 +5,7 @@ const { parse } = require('csv-parse/sync');
 const { SuiteClient } = require('../clients/suiteClient');
 const { ApiUtils } = require('../../../helpers/apiUtils');
 const { ExamplesConvert } = require('../../../helpers/examplesConvert');
+const { Contract } = require('../../../helpers/contract');
 
 test.describe('Validate PUT Suite API @allPutSuite @testVerse @crudSuite', () => {
     let idSuite;
@@ -17,7 +18,8 @@ test.describe('Validate PUT Suite API @allPutSuite @testVerse @crudSuite', () =>
 
     test('Should edit suite @putSuite', async ({ request }) => {
         const suiteClient = new SuiteClient(request);
-        await suiteClient.editSuite(idSuite);
+        const reqPutSuite = (await suiteClient.editSuite(idSuite)).apiResponse;
+        new Contract().validateContract(reqPutSuite, path.join(__dirname, '../schemas/putSuite.json'));
     });
 
     const recordsPutSuite = parse(fs.readFileSync(path.join(__dirname, '../examples/examplesPutSuite.csv')), {

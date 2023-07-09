@@ -1,0 +1,48 @@
+{
+    "schema": "POST /test-cases",
+    "type": "object",
+    "properties": {
+        "id_teste": {
+            "type": "integer"
+        },
+        "nome_teste": {
+            "type": "string"
+        },
+        "ultima_exec": {
+            "type": "string"
+        },
+        "status_ultima_exec": {
+            "type": "null"
+        },
+        "id_suite": {
+            "type": "integer"
+        },
+        "status_atual": {
+            "type": "string"
+        },
+        "zip_evidencia": {
+            "type": "string"
+        },
+        "nome_executor": {
+            "type": "string"
+        },
+        "data_criacao": {
+            "type": "string"
+        },
+        "data_edicao": {
+            "type": "null"
+        }
+    },
+    "required": [
+        "id_teste",
+        "nome_teste",
+        "ultima_exec",
+        "status_ultima_exec",
+        "id_suite",
+        "status_atual",
+        "zip_evidencia",
+        "nome_executor",
+        "data_criacao",
+        "data_edicao"
+    ]
+}
