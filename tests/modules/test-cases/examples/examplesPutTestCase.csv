@@ -58,7 +58,7 @@
 "statusAtual",0,400
 "statusAtual",randomFloat,400
 "zipEvidencia","",400
-"zipEvidencia",null,400
+"zipEvidencia",null,200
 "zipEvidencia",1.stringValue,400
 "zipEvidencia",2.stringValue,200
 "zipEvidencia",3.stringValue,200

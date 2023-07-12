@@ -5,7 +5,7 @@ function payloadPostTestCases(suiteId = null) {
     const dataFaker = new DataFaker()
     return JSON.stringify({
         "nomeTeste": `Validar o teste ${dataFaker.getFullName()}`,
-        "ultimaExec": dataFaker.getCurrentDate('yyyy-MM-DDTH:m:s'),
+        "ultimaExec": dataFaker.getCurrentDate('yyyy-MM-DDTHH:mm:ss'),
         "statusUltimaExec": null,
         "idSuite": suiteId,
         "statusAtual": "new",
