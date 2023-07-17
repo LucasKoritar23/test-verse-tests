@@ -11,4 +11,5 @@ rm -R -f reports/junit/*.xml
 rm -R -f reports/playwright-report
 rm -R -f reports/test-results
 rm -R -f reports/videos
+rm -R -f test-results
 rm -f allure-results.zip

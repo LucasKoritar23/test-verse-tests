@@ -18,5 +18,6 @@ RUN ln -s /opt/allure-2.22.4/bin/allure /usr/bin/allure
 RUN rm -R allure-2.22.4.tgz
 
 RUN npm install -g npm@latest 
+RUN npm install 
 
 # RUN npm ci
