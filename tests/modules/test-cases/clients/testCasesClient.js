@@ -52,6 +52,36 @@ class TestCasesClient {
         return { "apiResponse": apiResponse, "payloadSended": payload }
     }
 
+    async getAllTestCases(statusCode = 200) {
+        const uri = this.baseUri + this.basePath;
+        console.log(`Starting Request GET: ${this.basePath}`);
+        console.log("Uri: " + uri);
+        const apiRequest = await this.request.get(uri, {
+            headers: JSON.parse(this.headers()),
+        });
+        const apiResponse = await apiRequest.json();
+        console.log(`Response ${[this.basePath]}: `);
+        console.log(apiResponse);
+        console.log(`StatusCode ${this.basePath}: ` + apiRequest.status());
+        expect(apiRequest.status()).toEqual(statusCode);
+        return { "apiResponse": apiResponse, "payloadSended": null }
+    }
+
+    async getTestCaseByID(idTestCase, statusCode = 200) {
+        const uri = this.baseUri + this.basePath + `/${idTestCase}`;
+        console.log(`Starting Request GET by ID: ${this.basePath}`);
+        console.log("Uri: " + uri);
+        const apiRequest = await this.request.get(uri, {
+            headers: JSON.parse(this.headers()),
+        });
+        const apiResponse = await apiRequest.json();
+        console.log(`Response ${[this.basePath]}: `);
+        console.log(apiResponse);
+        console.log(`StatusCode ${this.basePath}: ` + apiRequest.status());
+        expect(apiRequest.status()).toEqual(statusCode);
+        return { "apiResponse": apiResponse, "payloadSended": null }
+    }
+
     async createTestCase(payload = null, statusCode = 201) {
         const suiteClient = new SuiteClient(this.request);
         const reqCreateSuite = await suiteClient.createSuite(null, statusCode)
@@ -64,6 +94,7 @@ class TestCasesClient {
 
         return await this.postTestCases(payload, statusCode)
     }
+    
 }
 
 module.exports = { TestCasesClient };
