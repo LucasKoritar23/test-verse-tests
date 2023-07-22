@@ -1,0 +1,56 @@
+{
+    "schema": "POST /test-steps",
+    "type": "object",
+    "properties": {
+        "id_test_step": {
+            "type": "integer"
+        },
+        "nome_step": {
+            "type": "string"
+        },
+        "ultima_exec": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "status_ultima_exec": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "id_suite": {
+            "type": "integer"
+        },
+        "id_test_case": {
+            "type": "integer"
+        },
+        "status_atual": {
+            "type": "string"
+        },
+        "nome_executor": {
+            "type": "string"
+        },
+        "data_criacao": {
+            "type": "string"
+        },
+        "data_edicao": {
+            "type": [
+                "string"
+            ]
+        }
+    },
+    "required": [
+        "id_test_step",
+        "nome_step",
+        "ultima_exec",
+        "status_ultima_exec",
+        "id_suite",
+        "id_test_case",
+        "status_atual",
+        "nome_executor",
+        "data_criacao",
+        "data_edicao"
+    ]
+}
