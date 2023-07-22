@@ -1,7 +1,8 @@
 const { expect } = require("@playwright/test");
 const { SuiteClient } = require("../../suites/clients/suiteClient");
+const { TestCasesClient } = require("../../test-cases/clients/testCasesClient");
 
-class TestCasesClient {
+class StepsClient {
     /**
    * @param {import('playwright').APIRequest} request
    */
@@ -9,7 +10,7 @@ class TestCasesClient {
     constructor(request) {
         this.request = request;
         this.baseUri = process.env.URI_API;
-        this.basePath = '/test-cases'
+        this.basePath = '/test-steps'
     }
 
     headers() {
@@ -18,7 +19,7 @@ class TestCasesClient {
         });
     }
 
-    async postTestCases(payload, statusCode = 201) {
+    async postSteps(payload, statusCode = 201) {
         const uri = this.baseUri + this.basePath;
         console.log(`Starting Request POST: ${this.basePath}`);
         console.log("Uri: " + uri);
@@ -35,8 +36,8 @@ class TestCasesClient {
         return { "apiResponse": apiResponse, "payloadSended": payload }
     }
 
-    async putTestCases(testCaseId, payload, statusCode = 200) {
-        const uri = this.baseUri + this.basePath + `/${testCaseId}`;
+    async putSteps(stepId, payload, statusCode = 200) {
+        const uri = this.baseUri + this.basePath + `/${stepId}`;
         console.log(`Starting Request PUT: ${this.basePath}`);
         console.log("Uri: " + uri);
         console.log("Payload: " + payload);
@@ -52,7 +53,7 @@ class TestCasesClient {
         return { "apiResponse": apiResponse, "payloadSended": payload }
     }
 
-    async getAllTestCases(statusCode = 200) {
+    async getAllSteps(statusCode = 200) {
         const uri = this.baseUri + this.basePath;
         console.log(`Starting Request GET: ${this.basePath}`);
         console.log("Uri: " + uri);
@@ -67,8 +68,8 @@ class TestCasesClient {
         return { "apiResponse": apiResponse, "payloadSended": null }
     }
 
-    async getTestCaseByID(idTestCase, statusCode = 200) {
-        const uri = this.baseUri + this.basePath + `/${idTestCase}`;
+    async getStepsByID(stepId, statusCode = 200) {
+        const uri = this.baseUri + this.basePath + `/id/${stepId}`;
         console.log(`Starting Request GET by ID: ${this.basePath}`);
         console.log("Uri: " + uri);
         const apiRequest = await this.request.get(uri, {
@@ -82,9 +83,39 @@ class TestCasesClient {
         return { "apiResponse": apiResponse, "payloadSended": null }
     }
 
-    async deleteTestCaseByID(idTestCase, statusCode = 200) {
-        const uri = this.baseUri + this.basePath + `/${idTestCase}`;
-        console.log(`Starting Request DELETE by ID: ${this.basePath}`);
+    async getStepsByName(stepName, statusCode = 200) {
+        const uri = this.baseUri + this.basePath + `/name/${stepName}`;
+        console.log(`Starting Request GET by ID: ${this.basePath}`);
+        console.log("Uri: " + uri);
+        const apiRequest = await this.request.get(uri, {
+            headers: JSON.parse(this.headers()),
+        });
+        const apiResponse = await apiRequest.json();
+        console.log(`Response ${[this.basePath]}: `);
+        console.log(apiResponse);
+        console.log(`StatusCode ${this.basePath}: ` + apiRequest.status());
+        expect(apiRequest.status()).toEqual(statusCode);
+        return { "apiResponse": apiResponse, "payloadSended": null }
+    }
+
+    async getStepsByTestCaseID(testCaseID, statusCode = 200) {
+        const uri = this.baseUri + this.basePath + `/test/${testCaseID}`;
+        console.log(`Starting Request GET by ID: ${this.basePath}`);
+        console.log("Uri: " + uri);
+        const apiRequest = await this.request.get(uri, {
+            headers: JSON.parse(this.headers()),
+        });
+        const apiResponse = await apiRequest.json();
+        console.log(`Response ${[this.basePath]}: `);
+        console.log(apiResponse);
+        console.log(`StatusCode ${this.basePath}: ` + apiRequest.status());
+        expect(apiRequest.status()).toEqual(statusCode);
+        return { "apiResponse": apiResponse, "payloadSended": null }
+    }
+
+    async deleteStepsByID(stepId, statusCode = 200) {
+        const uri = this.baseUri + this.basePath + `/${stepId}`;
+        console.log(`Starting Request GET by ID: ${this.basePath}`);
         console.log("Uri: " + uri);
         const apiRequest = await this.request.delete(uri, {
             headers: JSON.parse(this.headers()),
@@ -96,21 +127,17 @@ class TestCasesClient {
         expect(apiRequest.status()).toEqual(statusCode);
         return { "apiResponse": apiResponse, "payloadSended": null }
     }
+    async createStep() {
+        const testCasesClient = new TestCasesClient(this.request);
+        const reqCreateTestCase = await (await testCasesClient.createTestCase(null, 201)).apiResponse;
 
+        const suiteId = reqCreateTestCase.id_suite;
+        const testCaseId = reqCreateTestCase.id_teste;
 
-    async createTestCase(payload = null, statusCode = 201) {
-        const suiteClient = new SuiteClient(this.request);
-        const reqCreateSuite = await suiteClient.createSuite(null, statusCode)
-        const suiteId = JSON.parse(JSON.stringify(reqCreateSuite)).apiResponse.id_suite
-
-        if (payload == null) {
-            const payloadFile = require("../mocks/postTestCases");
-            payload = payloadFile.payloadPostTestCases(suiteId);
-        }
-
-        return await this.postTestCases(payload, statusCode)
+        const payloadPostSteps = require('../mocks/postSteps').payloadPostSteps(suiteId, testCaseId);
+        return await this.postSteps(payloadPostSteps, 201);
     }
 
 }
 
-module.exports = { TestCasesClient };
+module.exports = { StepsClient };
