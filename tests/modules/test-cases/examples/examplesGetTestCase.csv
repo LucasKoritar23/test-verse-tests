@@ -1,0 +1,8 @@
+"field","value","code"
+"idTestCase",null,400
+"idTestCase",1.stringValue,400
+"idTestCase",true,400
+"idTestCase",false,400
+"idTestCase",-1,404
+"idTestCase",0,404
+"idTestCase",randomFloat,400
