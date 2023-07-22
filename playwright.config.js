@@ -9,7 +9,7 @@ const dotenv = require('dotenv');
 // require('dotenv').config();
 
 
-const envFileName = process.env.ENV_TYPE === 'prd' ? '.env.prd' : '.env.local'; 
+const envFileName = process.env.ENV_TYPE === 'prd' ? '.env.prd' : '.env.local';
 
 /**
  * @see https://playwright.dev/docs/test-configuration

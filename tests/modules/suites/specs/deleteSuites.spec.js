@@ -7,16 +7,10 @@ const { Contract } = require('../../../helpers/contract');
 const { ExamplesConvert } = require('../../../helpers/examplesConvert');
 
 test.describe('Validate DELETE Suite API @deleteSuite @testVerse @crudSuite', () => {
-    let idSuite;
-
-    test.beforeAll(async ({ request }) => {
-        const suiteClient = new SuiteClient(request);
-        const apiResponse = await suiteClient.createSuite()
-        idSuite = apiResponse.apiResponse.id_suite
-    });
-
     test('Should delete suite by Id @deleteSuiteByID', async ({ request }) => {
         const suiteClient = new SuiteClient(request);
+        const apiResponse = await suiteClient.createSuite()
+        const idSuite = apiResponse.apiResponse.id_suite
         await suiteClient.deleteSuiteByID(idSuite);
     });
 
